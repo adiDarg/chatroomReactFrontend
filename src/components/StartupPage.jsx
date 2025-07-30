@@ -57,7 +57,7 @@ function CreateRoom(props) {
                     setRoom("")
                 }
                 if (data.type === "error"){
-                    throw Error("Internal sever error: " + data.message)
+                    console.error("Internal sever error: " + data.message)
                 }
             } catch (err) {
                 console.error("Error parsing WebSocket message:", err);
