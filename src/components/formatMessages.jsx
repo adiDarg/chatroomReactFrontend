@@ -19,7 +19,7 @@ function createRoomMessage(room){
     return getJSON("create","",room,"","")
 }
 function fetchMessagesMessage(room){
-    return getJSON("fetch",room,"","","")
+    return getJSON("fetch","",room,"","")
 }
 
 export {getRoomsMessage,joinRoomMessage,createRoomMessage,fetchMessagesMessage};

@@ -11,27 +11,30 @@ function ShowChatRooms(props) {
         setRoom(newRoom);
     }
     useEffect(() => {
-        socket.send(joinRoomMessage(props.username,room));
-    }, [room]);
-    useEffect(() => {
-        const eventFunc = (e) => {
-            try {
-                const data = JSON.parse(e.data)
-                if (data.type === "success" && data.message === "join") {
-                    alert(room)
-                    navigate("/chatRoom", { state: { room } });
-                }
-                if (data.type === "error"){
-                    console.error("Internal server error: " + data.message)
-                }
-            } catch (err) {
-                console.error("Error parsing WebSocket message:", err);
-            }
-        }
-        socket?.addEventListener("message", eventFunc);
+        if (room.trim() !== "" && props.username.trim() !== ""){
+            socket.send(joinRoomMessage(props.username,room));
 
-        return () => socket?.removeEventListener("message", eventFunc);
-    },[navigate, room]);
+            const eventFunc = (e) => {
+                try {
+                    const data = JSON.parse(e.data)
+                    if (data.type === "success" && data.message === "join") {
+                        navigate("/chatRoom", {state: {room: room, username: props.username}});
+                    }
+                    if (data.type === "error") {
+                        console.error("Internal server error: " + data.message)
+                    }
+                } catch (err) {
+                    console.error("Error parsing WebSocket message:", err);
+                }
+            }
+            socket?.addEventListener("message", eventFunc);
+
+            return () => socket?.removeEventListener("message", eventFunc);
+        }
+        if (props.username.trim() === "" && room.trim() !== ""){
+            alert("You must have a username to enter a chatroom");
+        }
+    }, [room]);
     return (
         <div>
             {props.rooms.map((room) => (

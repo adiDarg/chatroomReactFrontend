@@ -14,7 +14,7 @@ function StartupPage() {
         const serverMessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === "info"){
-                setRooms(JSON.parse(data.message));
+                setRooms(data.message);
             }
         }
         getRooms();
