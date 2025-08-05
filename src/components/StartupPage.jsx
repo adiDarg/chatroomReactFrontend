@@ -1,6 +1,8 @@
-import {createRoomMessage, getRoomsMessage} from "./formatMessages.jsx";
+import {getRoomsMessage} from "./formatMessages.jsx";
 import {useEffect, useState} from "react";
 import socket from "./socket.js";
+import ShowChatRooms from "./ShowChatRooms.jsx";
+import CreateRoom from "./CreateRoom.jsx";
 function StartupPage() {
     const[username, setUsername] = useState("");
     const[rooms,setRooms] = useState([]);
@@ -27,54 +29,11 @@ function StartupPage() {
                 <input onChange={(e) => setUsername(e.target.value)} placeholder="Enter username"/>
             </div>
             <h3>Available chat rooms:</h3>
-            <ShowChatRooms rooms={rooms}/>
+            <ShowChatRooms rooms={rooms} username={username}/>
             <h3>Create chat room:</h3>
             <CreateRoom rooms={rooms} update={setUpdate}/>
         </div>
     )
 }
 
-function ShowChatRooms(props) {
-    return (
-        <div>
-            {props.rooms.map((room) => (
-                (room && <div key={room}>
-                     <h4>{room}</h4>
-                    <button>Join</button>
-                </div>)
-            ))}
-        </div>
-    )
-}
-function CreateRoom(props) {
-    const[room,setRoom] = useState("");
-    useEffect(() => {
-        const eventFunc = (e) => {
-            try {
-                const data = JSON.parse(e.data)
-                if (data.type === "success" && data.message === "create") {
-                    props.update(prev => !prev);
-                    setRoom("")
-                }
-                if (data.type === "error"){
-                    console.error("Internal sever error: " + data.message)
-                }
-            } catch (err) {
-                console.error("Error parsing WebSocket message:", err);
-            }
-        }
-        socket?.addEventListener("message", eventFunc);
-
-        return () => socket?.removeEventListener("message", eventFunc);
-    },[props]);
-    const createRoom = () => {
-        socket.send(createRoomMessage(room));
-    }
-    return (
-        <div>
-            <input value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Enter chat room name"/>
-            <button onClick={createRoom}>Create</button>
-        </div>
-    )
-}
 export default StartupPage
