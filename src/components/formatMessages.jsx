@@ -8,6 +8,9 @@ function getJSON(type,username,room,value,timeStamp){
     }
     return JSON.stringify(message)
 }
+function sendMessageMessage(username,room,value,timeStamp){
+    return getJSON("send",username,room,value,timeStamp)
+}
 
 function getRoomsMessage(){
     return getJSON("getRooms","","","","")
@@ -22,4 +25,4 @@ function fetchMessagesMessage(room){
     return getJSON("fetch","",room,"","")
 }
 
-export {getRoomsMessage,joinRoomMessage,createRoomMessage,fetchMessagesMessage};
+export {getRoomsMessage,joinRoomMessage,createRoomMessage,fetchMessagesMessage,sendMessageMessage};
