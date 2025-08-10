@@ -1,3 +1,4 @@
+import '../styles/Global.css'
 import {getRoomsMessage} from "./formatMessages.jsx";
 import {useEffect, useState} from "react";
 import socket from "./socket.js";
@@ -23,11 +24,8 @@ function StartupPage() {
     },[update])
     return (
         <div>
-            <h1>Welcome {username}!</h1>
-            <div style={{display: "flex", justifyContent: "space-between"}}>
-                <h2 style={{marginRight: "1em"}}>Enter username:</h2>
-                <input onChange={(e) => setUsername(e.target.value)} placeholder="Enter username"/>
-            </div>
+            <h1>Welcome!</h1>
+            <input onChange={(e) => setUsername(e.target.value)} placeholder="Enter username"/>
             <h3>Available chat rooms:</h3>
             <ShowChatRooms rooms={rooms} username={username}/>
             <h3>Create chat room:</h3>

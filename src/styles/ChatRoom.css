@@ -1,0 +1,28 @@
+.message {
+    display:block;
+    border: gray solid 0.1em;
+    background-color: #d5d1d1;
+    padding: 0.5em;
+    margin: 0.5em;
+    border-radius: 1.2em;
+}
+.systemMessage{
+    padding: 0.5em;
+    margin: 0.5em;
+}
+.message *, .systemMessage {
+    text-align:left;
+    margin: 0.3em;
+}
+.message .username, .message .date{
+    font-weight: normal;
+}
+.messages{
+    padding:1em;
+    margin: auto;
+    border: gray solid 0.2em;
+    border-radius: 0.5em;
+    width: 30em;
+    height: 30em;
+    overflow-y: scroll;
+}

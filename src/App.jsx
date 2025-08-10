@@ -1,7 +1,6 @@
-import './App.css'
+import './styles/App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import StartupPage from "./components/StartupPage.jsx";
-import CreateRoom from "./components/CreateRoom.jsx";
 import ChatRoom from "./components/ChatRoom.jsx";
 
 function App() {

@@ -1,3 +1,4 @@
+import "../styles/Rooms.css"
 import socket from "./socket.js";
 import {joinRoomMessage} from "./formatMessages.jsx";
 import {useEffect, useState} from "react";
@@ -36,10 +37,10 @@ function ShowChatRooms(props) {
         }
     }, [room]);
     return (
-        <div>
+        <div className="rooms">
             {props.rooms.map((room) => (
-                (room && <div key={room}>
-                    <h4>{room}</h4>
+                (room && <div key={room} className="elementAndInputDiv">
+                    <h4 style={{marginRight: "1em",marginLeft: "0"}}>{room}:</h4>
                     <button onClick={() => joinRoom(room)}>Join</button>
                 </div>)
             ))}

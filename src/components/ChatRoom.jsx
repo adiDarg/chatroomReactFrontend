@@ -1,4 +1,6 @@
-import {useEffect, useState} from "react";
+import '../styles/ChatRoom.css'
+import '../styles/Global.css'
+import {use, useEffect, useState} from "react";
 import {fetchMessagesMessage, sendMessageMessage} from "./formatMessages.jsx";
 import { useLocation } from "react-router-dom";
 import socket from "./socket.js";
@@ -13,20 +15,21 @@ function ChatRoom() {
 
     const sendMessage = ()=> {
         socket.send(sendMessageMessage(username,room,message,Date.now().toString()));
-
-        const eventFunc = (e) => {
-            const data = JSON.parse(e.data)
-            if (data.type === "success"){
+    }
+    useEffect(() => {
+        const handleMessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "success" && data.message === "send") {
                 setMessage("");
                 setResendMessages(prev => !prev);
-            }
-            if (data.type === "error") {
+            } else if (data.type === "error") {
                 alert(data.message);
             }
-        }
-        socket.addEventListener("message", eventFunc)
-        return () => socket.removeEventListener("message", eventFunc)
-    }
+        };
+
+        socket.addEventListener("message", handleMessage);
+        return () => socket.removeEventListener("message", handleMessage);
+    }, []);
 
     useEffect(() => {
         const getMessages = () => {
@@ -45,15 +48,19 @@ function ChatRoom() {
     return (
         <div>
             <h1>{room}</h1>
-            {messages.map((message) => (
-                message.Username === "system"? <div className="systemMessage">({message.Value})</div> :
-                    <div className="message">
-                        <h5>{message.Username}</h5>
-                        <h4>{message.Value}</h4>
-                        <h6>{new Date(message.Timestamp).toLocaleDateString()}</h6>
-                    </div>
-            ))}
-            <div style={{display: "flex", justifyContent: "space-between"}}>
+            <h2>Your username: {username}</h2>
+            <div className="messages">
+                {messages.map((message) => (
+                    message &&
+                    message.Username === "system"? <div className="systemMessage">({message.Value})</div> :
+                        <div className="message">
+                            <h5 className="username">{message.Username}</h5>
+                            <h4 className="message-content">{message.Value}</h4>
+                            <h6 className="date">{new Date(message.TimeStamp).toLocaleString()}</h6>
+                        </div>
+                ))}
+            </div>
+            <div className="elementAndInputDiv">
                 <input placeholder="Send a message.." value={message} onChange={e => setMessage(e.target.value)}/>
                 <button onClick={sendMessage}>Send</button>
             </div>
